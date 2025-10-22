@@ -1,0 +1,29 @@
+pasos
+c: docker network create --driver bridge ros2_network
+c: docker network ls
+c: mkdir pcap
+c: docker run -it --rm --name ros2_node_host \
+  --network ros2_network \
+  --hostname ros2_publisher \
+  -v "$(pwd)/nodes":/root/ros2_ws/src/sensor_program \
+  -v "$(pwd)/data":/root/ros2_ws/data \
+  jazzy_dest_improve:latest
+  c: d: ros2 run sensor_program sensor_node
+  
+  nt: # Ejecutar contenedor sniffer
+docker run -it --name docker_sniffer \
+  --network ros2_network \
+  --cap-add=NET_ADMIN \
+  --cap-add=NET_RAW \
+  -v "$(pwd)/pcap":/root/pcap \
+  nicolaka/netshoot:latest bash
+  
+  nt: g: cd /root/pcap
+tcpdump -i eth0 -w trafico_ros.pcap
+
+# En varias terminales mas ejecutar todos los nodos
+docker exec -it ros2_node_host bash
+# DENTRO de esta terminal:
+ros2 run sensor_program (ejecutar un nodo)
+
+finalizar la captura, abrir en wireshar y analizar
