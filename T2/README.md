@@ -4,21 +4,12 @@ Este repositorio contiene el desarrollo del Taller de Introducción a ROS 2 (Rob
 
 El proyecto implementa una arquitectura distribuida de nodos (Publisher/Subscriber) y un nodo de visualización de datos (plotter_node) que utiliza Matplotlib para graficar la temperatura en tiempo real.
 
-🚀 Estructura del Proyecto
+### 🚀 Estructura del Proyecto
 
-El proyecto se organiza en un workspace de ROS 2 llamado ros2_ws dentro del contenedor. Los archivos fuente se separan en carpetas en el host para facilitar la construcción de la imagen:
+El proyecto se organiza en un **workspace** de ROS 2 llamado `ros2_ws` dentro del contenedor. Los archivos fuente se separan en carpetas en el host para facilitar la construcción de la imagen:
 
-T2/
-├── Dockerfile              # Automatiza el ambiente, dependencias y compilación.
-├── config/
-│   └── setup.py          # Configuración del paquete, registra todos los nodos.
-├── nodes/
-│   ├── sensor_node.py      # PUBLICADOR: Genera datos de temperatura aleatorios.
-│   ├── reader_node.py      # SUSCRIPTOR: Imprime datos recibidos.
-│   ├── reader_node_2.py    # SUSCRIPTOR 2: Imprime datos recibidos (prueba de escalabilidad).
-│   └── plotter_node.py     # SUSCRIPTOR/GRAFICADOR: Genera gráficos .png.
-├── pcap/                   # Carpeta para almacenar capturas de tráfico de red.
-└── data/                   # Carpeta COMPARTIDA para almacenar los gráficos .png generados.
+"Pendiente"
+
 
 ⚙️ Requisitos
 
@@ -50,13 +41,16 @@ docker run -it --name ros2_ws_data \
   -v "$(pwd)/data":/root/ros2_ws/data \
   ros2_sensor_net bash
 
-3. Ejecutar los Nodos (Comunicación Distribuida)
+### 3. Ejecutar los Nodos (Comunicación Distribuida)
 
 Una vez que el contenedor arranca, el ambiente de ROS 2 ya está cargado automáticamente. Se requieren múltiples terminales para ejecutar la red completa:
-Terminal	Rol del Nodo	Comando
-Terminal 1 (Actual)	Publicador (Sensor)	ros2 run sensor_program sensor_node
-Terminal 2 (Nueva)	Suscriptor (Lector 1)	docker exec -it ros2_ws_data bash → ros2 run sensor_program reader_node
-Terminal 3 (Nueva)	Graficador	docker exec -it ros2_ws_data bash → ros2 run sensor_program plotter_node
+
+| Terminal | Rol del Nodo | Comando |
+| :--- | :--- | :--- |
+| **Terminal 1** (Actual) | Publicador (Sensor) | `ros2 run sensor_program sensor_node` |
+| **Terminal 2** (Nueva) | Suscriptor (Lector 1) | `docker exec -it ros2_ws_data bash` $\rightarrow$ `ros2 run sensor_program reader_node` |
+| **Terminal 3** (Nueva) | Suscriptor (Lector 2) | `docker exec -it ros2_ws_data bash` $\rightarrow$ `ros2 run sensor_program reader_node_2` |
+| **Terminal 4** (Nueva) | Graficador | `docker exec -it ros2_ws_data bash` $\rightarrow$ `ros2 run sensor_program plotter_node` |
 
 ✨ Actividad Reto: Generación de Gráficos
 
