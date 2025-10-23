@@ -1,0 +1,33 @@
+# Identifiación del puerto serial
+dmesg | grep tty
+
+# Permisos al puerto serial
+sudo usermod -a -G dialout $USER
+
+# Redacción del Dockerfile
+
+# Creación de la iamgen a partir del Dockerfile 
+docker build -t jazzy_dest_improve:t3 .
+
+# Creación del contenedor
+docker run -it --name ros2_t3_serial \
+--device=/dev/ttyUSB1 \
+jazzy_dest_improve:t3
+
+# Dentro del contenedor mientras esta conectado nuestro ESP32 al serial
+minicom -D /dev/ttyUSB1 -b 115200
+
+# Copilar y ejecutar el espacio de trabajo
+ros2 run sensor_serial sensor_node 
+
+# Para ejcutar el resto de nodos en el mismo docker pero en terminales diferentes
+docker exec -it ros2_t3_serial bash
+
+# Cargar la imagen creada a nuestro repositorio en Docker Hub
+docker login
+docker tag jazzy_dest_improve:t3 josephjaramillo/jazzy_desk_improve:t3
+docker push josephjaramillo/jazzy_desk_improve:t3
+
+# Cargar nuestra carpte de trabajo T3 a Github
+
+
