@@ -1,0 +1,62 @@
+- Instalacion e herramientas CAN
+sudo apt install can-utils
+
+
+lsusb
+ip link ls
+sudo ip link set can0 type can bitrate 500000
+sudo ip link set up can0
+ip a
+#o sudo ip link set can0 up type can bitrate 500000
+
+sudo ip link set up can0 type can bitrate 500000
+
+
+---Modificaciones en el Dockerfile-----
+# ... (Sección de instalación de dependencias)
+RUN apt update && apt upgrade -y && \
+    apt install -y \
+    python3-colcon-common-extensions \
+    nano \
+    python3-pip \
+    python3-matplotlib \
+    # ELIMINAR python3-serial
+    minicom \
+    tree
+    
+# Instalar la librería python-can para el nodo
+RUN python3 -m pip install python-can --break-system-packages
+# ...
+-----------
+
+----------
+#Modificacion en el nodo sensor en el codigo
+
+---------------
+
+#Construcción de la nueva imagen
+docker build -t jazzy_dest_improve:t5 .
+#Crear y correr el contenedor
+docker run -it --name ros2_t5_can \
+--net=host \
+jazzy_dest_improve:t5
+
+
+#Permitir la cosntruiccion de gráficos
+xhost +local:docker
+docker stop ros2_t5_can
+docker rm ros2_t5_can
+#Añanidr graficos
+docker run -it --name ros2_t5_gui \
+--net=host \
+-e DISPLAY=$DISPLAY \
+-v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+jazzy_dest_improve:t5
+#Intento final
+docker run -it --name ros2_t5_grap \
+--net=host \
+-e DISPLAY=$DISPLAY \
+-e QT_X11_NO_MITSHM=1 \
+-v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+-v $HOME/.Xauthority:/root/.Xauthority:ro \
+jazzy_dest_improve:t5
