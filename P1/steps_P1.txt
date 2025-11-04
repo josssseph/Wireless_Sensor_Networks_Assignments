@@ -1,0 +1,21 @@
+1) Redacción del Dockerfile de acuerdo a nuesto directorio base
+2) Crear la imagen
+docker build -t p1_dc .
+3) Crear el contenedor con recursos de host
+docker run -it --name cp1 \
+--net=host \
+p1_dc
+
+# Reconstruir una imagen cada vez que hacemos un cambio en los nodos: docker build -t p1_dc . --no-cache
+4) Permitir que el docker tenga permisos de abrir ventanas emergentes en el host
+xhost +local:docker
+
+5) Docker run adaptado para GUI
+docker run -it --name drone_ros_dev --network=host -e DISPLAY=$DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix:rw p1_dc
+
+6) Ver topicos
+ros2 topic list
+ros2 topic echo /tello/safety_status
+
+7) Enviar comandos 
+echo -n "command" | nc -u -w 1 192.168.10.1 8889
