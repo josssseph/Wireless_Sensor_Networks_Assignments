@@ -28,7 +28,8 @@ setup(
         'telemetry_monitor = drone_pkg.telemetry_monitor:main',
         'video_viewer = drone_pkg.video_viewer:main',
         'battery_failsafe = drone_pkg.battery_failsafe:main',
-        'mission_planner = drone_pkg.mission_planner:main'
+        'mission_planner = drone_pkg.mission_planner:main',
+        'object_detector_node = drone_pkg.object_detector_node:main'
     ],
 },
 )   

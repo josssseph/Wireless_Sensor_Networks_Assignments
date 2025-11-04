@@ -17,5 +17,35 @@ docker run -it --name drone_ros_dev --network=host -e DISPLAY=$DISPLAY -e QT_X11
 ros2 topic list
 ros2 topic echo /tello/safety_status
 
-7) Enviar comandos 
-echo -n "command" | nc -u -w 1 192.168.10.1 8889
+7) Subir a mi Github
+
+
+
+###########################################
+Grafana (dentro de P1)
+mkdir DB
+cd DB
+
+docker network create --driver bridge red-monitoreo-parrot
+docker run -d \
+  --name influxdb_tello \
+  --network red-monitoreo-parrot \
+  -p 8086:8086 \
+  -e DOCKER_INFLUXDB_INIT_MODE=setup \
+  -e DOCKER_INFLUXDB_INIT_USERNAME=rosuser \
+  -e DOCKER_INFLUXDB_INIT_PASSWORD=passwordsegura \
+  -e DOCKER_INFLUXDB_INIT_ORG=ParrotOrg \
+  -e DOCKER_INFLUXDB_INIT_BUCKET=tello_data \
+  -e DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mi-token-secreto \
+  influxdb:latest
+cd ..
+mkdir Grafana
+cd Grafana
+docker run -d \
+  --name grafana_tello \
+  --network red-monitoreo-parrot \
+  -p 3000:3000 \
+  grafana/grafana:latest
+  
+------ En un navegador: 127.0.0.1:3000 -> admin, admin
+------ Cambios en el nodo de telemetria y Dockerfile

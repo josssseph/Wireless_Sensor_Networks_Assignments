@@ -14,7 +14,7 @@ RUN apt update && apt upgrade -y && \
     net-tools \
     python3-opencv \
     ros-jazzy-cv-bridge \
-    netcat-openbsd
+    netcat-openbsd 
 
 # Instalamos las dependencias de djitellopy que apt NO nos dio
 RUN pip3 install av pillow --break-system-packages
@@ -22,6 +22,8 @@ RUN pip3 install av pillow --break-system-packages
 # Instalamos djitellopy SIN sus dependencias (para evitar el conflicto de opencv)
 RUN pip3 install djitellopy --no-dependencies --break-system-packages
 
+# Instalamos el cliente Python de InfluxDB ---
+RUN pip3 install influxdb-client --break-system-packages
 
 # Se ejecuta el script de entrada ROS2 (que carga /opt/ros/jazzy/setup.bash)
 ENTRYPOINT ["/ros_entrypoint.sh"]
