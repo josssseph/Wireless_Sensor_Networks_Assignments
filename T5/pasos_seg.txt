@@ -82,3 +82,11 @@ docker exec -it ros2_t5_reto bash
 ros2 run sensor_serial monitor_node
 ros2 run sensor_serial plotter_node_temp -> Gráfica en tiempo real
 
+-Actualizar Github
+git clone https://github.com/josssseph/Wireless_Sensor_Networks_Assignments 
+cd Wireless_Sensor_Networks_Assignments/
+cp -r /home/joseph/Documents/WSN/T5 .
+git add .
+git commit -m "Add T5 Reto"
+git push 
+-Link de Github: https://github.com/josssseph/Wireless_Sensor_Networks_Assignments
