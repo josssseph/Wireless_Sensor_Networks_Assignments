@@ -1,3 +1,4 @@
+#Taller 5
 - Instalacion e herramientas CAN
 sudo apt install can-utils
 
@@ -60,3 +61,24 @@ docker run -it --name ros2_t5_grap \
 -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
 -v $HOME/.Xauthority:/root/.Xauthority:ro \
 jazzy_dest_improve:t5
+
+
+
+-------------------------------------------------------------
+Pasos seguidos para el reto:
+docker build -t jazzy_dest_improve:t5 .
+xhost +local:docker
+sudo ip link set up can0 type can bitrate 500000
+docker run -it --name ros2_t5_reto --network=host -e DISPLAY=$DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix:rw jazzy_dest_improve:t5
+candump can0:   can0  100   [2]  03 3D
+  can0  200   [2]  03 0A
+  can0  100   [2]  02 B5
+  can0  200   [2]  00 23
+  can0  100   [2]  03 01
+  can0  200   [2]  00 0E
+ros2 run sensor_serial sensor_node 
+- En otra ventana
+docker exec -it ros2_t5_reto bash
+ros2 run sensor_serial monitor_node
+ros2 run sensor_serial plotter_node_temp -> Gráfica en tiempo real
+
