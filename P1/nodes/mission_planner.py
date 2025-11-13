@@ -26,13 +26,13 @@ class MissionPlannerNode(Node):
         # NOTA: Los comandos de acción DEBEN ser seguidos por un 'delay_' o 'wait_height'
         self.mission_queue = [
             'takeoff',        # 1. Despegue (Acción)
-            'delay_6',        # 2. Pausa 7s (Tiempo para subir/estabilizar)
+            'delay_60',        # 2. Pausa 7s (Tiempo para subir/estabilizar)
             'wait_height',    # 3. Esperar a alcanzar 50cm (Condición)
-            'delay_3',        # 4. Pausa 3s para estabilizar
-            'forward 50',     # 5. Avanzar 50cm (Acción)
-            'delay_5',        # 6. Pausa 5s (Tiempo para completar el movimiento)
+            'delay_60',        # 4. Pausa 3s para estabilizar
+            'forward 100',     # 5. Avanzar 50cm (Acción)
+            'delay_60cd',        # 6. Pausa 5s (Tiempo para completar el movimiento)
             'back 50',        # 7. Retroceder 50cm (Acción)
-            'delay_5',        # 8. Pausa 5s
+            'delay_60',        # 8. Pausa 5s
             'land'            # 9. Aterrizar (Acción)
         ]
 
@@ -111,7 +111,7 @@ class MissionPlannerNode(Node):
             self.height_check_timer = self.create_timer(1.0, self.wait_for_height_callback)
 
         else:
-            # 🛑 CLAVE CORREGIDA: Es un comando de Tello (ej. "takeoff", "forward 50")
+            # CLAVE CORREGIDA: Es un comando de Tello (ej. "takeoff", "forward 50")
             # Enviamos el comando y NO llamamos a execute_next_step() de inmediato.
             # Se ASUME que el siguiente paso de la cola es un 'delay_' o 'wait_'
             # que será ejecutado por el siguiente ciclo o timer.

@@ -7,6 +7,8 @@ docker run -it --name cp1 \
 p1_dc
 
 # Reconstruir una imagen cada vez que hacemos un cambio en los nodos: docker build -t p1_dc . --no-cache
+# Borrar imagenes huerfanas o none: docker image prune
+
 4) Permitir que el docker tenga permisos de abrir ventanas emergentes en el host
 xhost +local:docker
 
@@ -18,8 +20,6 @@ ros2 topic list
 ros2 topic echo /tello/safety_status
 
 7) Subir a mi Github
-
-
 
 ###########################################
 Grafana (dentro de P1)
@@ -49,3 +49,19 @@ docker run -d \
   
 ------ En un navegador: 127.0.0.1:3000 -> admin, admin
 ------ Cambios en el nodo de telemetria y Dockerfile
+
+
+-------------------------------------------------------
+** Graficar los nodos (mientras se ejecuntan todos los nodos en otro terminal ejecutar)
+source /root/ros2_ws/install/setup.bash
+export LIBGL_ALWAYS_SOFTWARE=1
+rqt_graph
+*** Se guardo el grafo en la carpeta de ros2_ws con la extension .dot
+Para copiar del contenedor al host
+dot -Tpng rosgraph.dot -o rosgraph.png
+
+** Para instalar las herrramientas que permitan trabajar con este formato
+ sudo apt install graphviz
+** Conversion a png
+dot -Tpng rosgraph.dot -o rosgraph.png
+

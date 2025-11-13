@@ -16,7 +16,7 @@ class BatteryFailsafeNode(Node):
     """
     
     # Definimos el umbral de batería como un parámetro de clase
-    BATTERY_THRESHOLD = 40 # Umbral del 30% como pide el PDF
+    BATTERY_THRESHOLD = 70 # Umbral del 30% como pide el PDF
 
     def __init__(self):
         super().__init__('battery_failsafe')
